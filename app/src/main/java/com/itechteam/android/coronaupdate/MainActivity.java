@@ -2,7 +2,7 @@ package com.itechteam.android.coronaupdate;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.core.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
