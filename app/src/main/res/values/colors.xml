@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="bgGradStartColor">#2d3047</color>
+    <color name="bgGradEndColor">#1b998b</color>
+
+    <color name="listGradStartColor">#00203FFF</color>
+    <color name="listGradEndColor">#ADEFD1FF</color>
+</resources>
