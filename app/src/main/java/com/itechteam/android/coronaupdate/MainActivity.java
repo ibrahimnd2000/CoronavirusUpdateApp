@@ -2,13 +2,15 @@ package com.itechteam.android.coronaupdate;
 
 import android.app.SearchManager;
 import android.content.Context;
-import androidx.core.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,16 +103,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchItem = menu.findItem(R.id.action_search);
         searchItem.setOnActionExpandListener(this);
         searchItem.setVisible(false);
-        SearchManager searchManager =
-                (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) searchItem.getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
         searchView.setOnQueryTextListener(this);
         return super.onCreateOptionsMenu(menu);
     }
-
 
 
     @Override
@@ -140,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         pullToRefresh = findViewById(R.id.pullToRefresh);
         myRecyclerView = findViewById(R.id.my_recycler_view);
         androidToolbar = findViewById(R.id.android_toolbar);
