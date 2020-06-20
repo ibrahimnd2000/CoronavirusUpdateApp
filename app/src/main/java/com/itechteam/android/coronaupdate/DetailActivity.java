@@ -24,7 +24,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +34,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.StreamEncoder;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.caverock.androidsvg.SVG;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -78,7 +73,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private Summary.Countries selectedCountry;
     private String flagUrl;
-    private ImageLoader imageLoader = ImageLoader.getInstance();
     private View rootView;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -262,7 +256,6 @@ public class DetailActivity extends AppCompatActivity {
         androidToolbar.setTitle(selectedCountry.getCountry() + " Details");
         setSupportActionBar(androidToolbar);
 
-        this.imageLoader.init(ImageLoaderConfiguration.createDefault(getBaseContext()));
         flagImageView = findViewById(R.id.flagImageView);
         setTextValues();
         rootView = getWindow().getDecorView().findViewById(android.R.id.content);
