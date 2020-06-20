@@ -10,14 +10,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -45,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private Toolbar androidToolbar;
     private MenuItem searchItem;
     private SwipeRefreshLayout pullToRefresh;
+    private AdView adView;
     private static final String TAG = "MainActivity";
+
 
     public static Retrofit getRetrofit() {
         gson = new GsonBuilder()
@@ -77,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     Log.d(TAG, "onResponse: " + response.code());
                 }
                 progressBar.setVisibility(View.GONE);
-                searchItem.setVisible(true);
                 countriesList = response.body().getCountriesList();
                 recyclerAdapter = new RecyclerAdapter(getApplicationContext(), countriesList);
                 myRecyclerView.setAdapter(recyclerAdapter);
@@ -85,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 Date date = response.body().getDate();
                 Toast.makeText(MainActivity.this, "Updated on: " + df.format("dd-MM-yyyy hh:mm:ss a", date), Toast.LENGTH_SHORT).show();
                 pullToRefresh.setRefreshing(false);
+                searchItem.setVisible(true);
 
             }
 
@@ -117,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             case R.id.action_search:
                 pullToRefresh.setEnabled(false);
                 return true;
+            case R.id.action_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -141,8 +157,22 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         pullToRefresh = findViewById(R.id.pullToRefresh);
         myRecyclerView = findViewById(R.id.my_recycler_view);
         androidToolbar = findViewById(R.id.android_toolbar);
-        setSupportActionBar(androidToolbar);
+        adView = findViewById(R.id.adView);
         progressBar = findViewById(R.id.progressBar);
+
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+
+        setSupportActionBar(androidToolbar);
+
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myRecyclerView.setLayoutManager(linearLayoutManager);
@@ -155,6 +185,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
         refreshList();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adView.destroy();
     }
 
     @Override

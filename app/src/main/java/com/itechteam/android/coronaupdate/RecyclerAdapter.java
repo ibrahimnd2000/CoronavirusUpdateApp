@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private List<Summary.Countries> countryList;
     private Summary.Countries selectedCountry;
     private List<Summary.Countries> temp;
+    private InterstitialAd interstitial;
 
     public RecyclerAdapter(Context context, List<Summary.Countries> countryList) {
         this.context = context;
@@ -83,6 +88,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
+
+                    interstitial = new InterstitialAd(context);
+                    interstitial.setAdUnitId("ca-app-pub-2231031195428326/2156645156");
+                    AdRequest adRequest = new AdRequest.Builder().build();
+                    interstitial.loadAd(adRequest);
+                    interstitial.setAdListener(new AdListener() {
+                        public void onAdLoaded() {
+                            if (interstitial.isLoaded()) {
+                                interstitial.show();
+                            }
+                        }
+                    });
 
                     if(pos != RecyclerView.NO_POSITION) {
                         selectedCountry = countryList.get(pos);

@@ -20,6 +20,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="#FFF" />
 
+
     <ImageView
         android:id="@+id/flagImageView"
         android:layout_width="200dp"
@@ -41,19 +42,21 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:stretchColumns="*"
-        app:layout_constraintBottom_toTopOf="@+id/shareButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/flagImageView">
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp">
 
             <TextView
@@ -61,34 +64,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="Country:"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/countryNameValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="1"
-                android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="Pakistan"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp">
 
             <TextView
@@ -96,34 +95,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="New Confirmed:"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/newConfirmedValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="1"
-                android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp">
 
             <TextView
@@ -131,35 +126,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="Total Confirmed:"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/totalConfirmedValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="1"
-                android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp">
 
             <TextView
@@ -167,34 +158,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="New Deaths:"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/newDeathsValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="1"
-                android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp">
 
             <TextView
@@ -202,34 +189,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="Total Deaths:"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/totalDeathsValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="1"
-                android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp">
 
             <TextView
@@ -237,34 +220,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="New Recovered:"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/newRecoveredValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="1"
-                android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
         </TableRow>
 
         <TableRow
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="8dp">
 
             <TextView
@@ -272,44 +251,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_gravity="start"
-                android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="Total Recovered:"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/totalRecoveredValueTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="1"
-                android:layout_gravity="end"
                 android:gravity="center_vertical"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/detail_view_gd"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/dateUpdatedTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:text="Date Updated:"
+                android:textColor="#FFFFFF"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/dateUpdatedValueTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:gravity="center_vertical"
+                android:text="April 01, 2000 : 1:00"
+                android:textColor="#FFFFFF"
+                android:textSize="14dp" />
         </TableRow>
 
     </TableLayout>
 
-    <Button
-        android:id="@+id/shareButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_grad"
-        android:text="SHARE"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
