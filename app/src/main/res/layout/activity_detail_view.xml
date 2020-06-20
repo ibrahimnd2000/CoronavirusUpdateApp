@@ -23,10 +23,10 @@
 
     <ImageView
         android:id="@+id/flagImageView"
-        android:layout_width="200dp"
+        android:layout_width="166.67dp"
         android:layout_height="100dp"
         android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
+        android:adjustViewBounds="false"
         android:contentDescription="Country Flag"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
