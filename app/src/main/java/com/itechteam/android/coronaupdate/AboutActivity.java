@@ -68,4 +68,10 @@ public class AboutActivity extends AppCompatActivity {
     public void onReviewClicked(View view) {
         rateApp();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adView.destroy();
+    }
 }

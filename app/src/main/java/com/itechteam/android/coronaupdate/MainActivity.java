@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -58,56 +60,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private AdView adView;
     private static final String TAG = "MainActivity";
 
-
-    public static Retrofit getRetrofit() {
-        gson = new GsonBuilder()
-                .create();
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
-                .build();
-
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl("https://api.covid19api.com/")
-                    .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofit;
-    }
-
-    public void refreshList() {
-        Covid19Api covid19Api = getRetrofit().create(Covid19Api.class);
-        Call<Summary> call = covid19Api.getSummary();
-        call.enqueue(new Callback<Summary>() {
-            @Override
-            public void onResponse(Call<Summary> call, Response<Summary> response) {
-                if (!response.isSuccessful()) {
-                    Log.d(TAG, "onResponse: " + response.code());
-                }
-                progressBar.setVisibility(View.GONE);
-                countriesList = response.body().getCountriesList();
-                recyclerAdapter = new RecyclerAdapter(getApplicationContext(), countriesList);
-                myRecyclerView.setAdapter(recyclerAdapter);
-                android.text.format.DateFormat df = new android.text.format.DateFormat();
-                Date date = response.body().getDate();
-                Toast.makeText(MainActivity.this, "Updated on: " + df.format("dd-MM-yyyy hh:mm:ss a", date), Toast.LENGTH_SHORT).show();
-                pullToRefresh.setRefreshing(false);
-                searchItem.setVisible(true);
-
-            }
-
-            @Override
-            public void onFailure(Call<Summary> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Sorry, we couldn't fetch the data. Make sure you're connected to Internet.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -136,6 +88,55 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    public static Retrofit getRetrofit() {
+        gson = new GsonBuilder()
+                .create();
+
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api.covid19api.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit;
+    }
+
+    public void refreshList() {
+        Covid19Api covid19Api = RetrofitClient.getApiService();
+
+        Call<Summary> call = covid19Api.getSummary();
+        call.enqueue(new Callback<Summary>() {
+            @Override
+            public void onResponse(Call<Summary> call, Response<Summary> response) {
+                if (!response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: " + response.code());
+                }
+                progressBar.setVisibility(View.GONE);
+                countriesList = response.body().getCountriesList();
+                recyclerAdapter = new RecyclerAdapter(getApplicationContext(), countriesList);
+                myRecyclerView.setAdapter(recyclerAdapter);
+                android.text.format.DateFormat df = new android.text.format.DateFormat();
+                Date date = response.body().getDate();
+                Toast.makeText(MainActivity.this, "Updated on: " + df.format("dd-MM-yyyy hh:mm:ss a", date), Toast.LENGTH_SHORT).show();
+                pullToRefresh.setRefreshing(false);
+                searchItem.setVisible(true);
+                recyclerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<Summary> call, Throwable t) {
+                call.clone().enqueue(this);
+            }
+        });
     }
 
     @Override
@@ -177,14 +178,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myRecyclerView.setLayoutManager(linearLayoutManager);
 
+        refreshList();
+
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshList();
-                recyclerAdapter.notifyDataSetChanged();
             }
         });
-        refreshList();
     }
 
     @Override
