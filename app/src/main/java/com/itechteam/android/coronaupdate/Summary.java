@@ -1,6 +1,5 @@
 package com.itechteam.android.coronaupdate;
 
-import android.os.Parcel;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -16,7 +15,7 @@ public class Summary implements Serializable {
     @SerializedName("Date")
     private Date date;
 
-    public class Global {
+    public static class Global {
         @SerializedName("NewConfirmed")
         private int newConfirmed;
         @SerializedName("TotalConfirmed")
@@ -55,7 +54,7 @@ public class Summary implements Serializable {
         }
     }
 
-    public class Countries implements Serializable {
+    public static class Countries implements Serializable {
         @SerializedName("Country")
         private String country;
         @SerializedName("CountryCode")

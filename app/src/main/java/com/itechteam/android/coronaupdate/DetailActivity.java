@@ -47,6 +47,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.internal.EverythingIsNonNull;
 
 public class DetailActivity extends AppCompatActivity {
     private static Retrofit retrofit;
@@ -247,22 +248,23 @@ public class DetailActivity extends AppCompatActivity {
         Call<CountriesFlag> call = restCountriesApi.getCountryFlags("https://restcountries.eu/rest/v2/alpha/" + selectedCountry.getCountryCode() + "?fields=flag");
         call.enqueue(new Callback<CountriesFlag>() {
             @Override
+            @EverythingIsNonNull
             public void onResponse(Call<CountriesFlag> call, Response<CountriesFlag> response) {
                 if (!response.isSuccessful() || response.body() == null) {
                     Toast.makeText(DetailActivity.this, "Sorry, country flag not found: " + response.code(), Toast.LENGTH_SHORT).show();
-                    flagImageView.setImageResource(R.drawable.placeholder_flag_error_image);
                 } else {
                     flagUrl = response.body().getFlag();
                     Uri uri = Uri.parse(flagUrl);
+                    shareMenuItem.setVisible(true);
                     requestBuilder
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .load(uri)
                             .into(flagImageView);
                 }
-                shareMenuItem.setVisible(true);
             }
 
             @Override
+            @EverythingIsNonNull
             public void onFailure(Call<CountriesFlag> call, Throwable t) {
                 Toast.makeText(DetailActivity.this, "Error encountered: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

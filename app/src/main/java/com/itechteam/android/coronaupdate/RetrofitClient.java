@@ -1,6 +1,5 @@
 package com.itechteam.android.coronaupdate;
 
-import com.itechteam.android.coronaupdate.RetryCallAdapterFactory;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {

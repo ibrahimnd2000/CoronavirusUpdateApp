@@ -17,7 +17,6 @@ import com.google.android.gms.ads.AdView;
 
 public class AboutActivity extends AppCompatActivity {
     private AdView adView;
-    private Toolbar aboutToolbar;
 
     public void rateApp() {
         try {
@@ -39,7 +38,6 @@ public class AboutActivity extends AppCompatActivity {
         }
         else
         {
-            //noinspection deprecation
             flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
         }
         intent.addFlags(flags);
@@ -58,11 +56,13 @@ public class AboutActivity extends AppCompatActivity {
         adView = findViewById(R.id.aboutAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-        aboutToolbar = findViewById(R.id.android_toolbar);
+        Toolbar aboutToolbar = findViewById(R.id.android_toolbar);
         aboutToolbar.setTitle("About");
         setSupportActionBar(aboutToolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     public void onReviewClicked(View view) {

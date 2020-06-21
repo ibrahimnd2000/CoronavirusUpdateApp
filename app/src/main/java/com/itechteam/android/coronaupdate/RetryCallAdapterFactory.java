@@ -1,7 +1,6 @@
 package com.itechteam.android.coronaupdate;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +16,8 @@ import retrofit2.CallAdapter;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.internal.EverythingIsNonNull;
+
 public class RetryCallAdapterFactory extends CallAdapter.Factory {
     private static final String TAG = "RetryCallAdapterFactory";
     public static RetryCallAdapterFactory create() {
@@ -26,9 +27,6 @@ public class RetryCallAdapterFactory extends CallAdapter.Factory {
     @Override
     public CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations,
                                  @NonNull Retrofit retrofit) {
-        /**
-         * You can setup a default max retry count for all connections.
-         */
         int itShouldRetry = 0;
         final Retry retry = getRetry(annotations);
         if (retry != null) {
@@ -60,6 +58,7 @@ public class RetryCallAdapterFactory extends CallAdapter.Factory {
             return delegated.responseType();
         }
         @Override
+        @EverythingIsNonNull
         public T adapt(final Call<R> call) {
             return delegated.adapt(maxRetries > 0 ? new RetryingCall<>(call, maxRetries) : call);
         }

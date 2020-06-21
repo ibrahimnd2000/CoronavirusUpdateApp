@@ -9,14 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,41 +71,33 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView countryNameTextView;
         private TextView totalCaseTextView;
-        private CardView cardView;
-        private Context context;
 
         public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
-            this.context = context;
             this.countryNameTextView = itemView.findViewById(R.id.countryNameTextView);
             this.totalCaseTextView = itemView.findViewById(R.id.totalCaseTextView);
-            this.cardView = itemView.findViewById(R.id.cardView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
 
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition();
-
-                    interstitial = new InterstitialAd(context);
-                    interstitial.setAdUnitId("ca-app-pub-2231031195428326/2156645156");
-                    AdRequest adRequest = new AdRequest.Builder().build();
-                    interstitial.loadAd(adRequest);
-                    interstitial.setAdListener(new AdListener() {
-                        public void onAdLoaded() {
-                            if (interstitial.isLoaded()) {
-                                interstitial.show();
-                            }
+                interstitial = new InterstitialAd(context);
+                interstitial.setAdUnitId("ca-app-pub-2231031195428326/2156645156");
+                AdRequest adRequest = new AdRequest.Builder().build();
+                interstitial.loadAd(adRequest);
+                interstitial.setAdListener(new AdListener() {
+                    public void onAdLoaded() {
+                        if (interstitial.isLoaded()) {
+                            interstitial.show();
                         }
-                    });
-
-                    if(pos != RecyclerView.NO_POSITION) {
-                        selectedCountry = countryList.get(pos);
-                        Intent intent = new Intent(context, DetailActivity.class);
-                        intent.putExtra("selectedCountry", (Serializable) selectedCountry);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
                     }
+                });
+
+                if(pos != RecyclerView.NO_POSITION) {
+                    selectedCountry = countryList.get(pos);
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("selectedCountry", selectedCountry);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
 
