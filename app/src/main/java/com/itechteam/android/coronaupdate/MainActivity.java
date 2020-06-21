@@ -144,12 +144,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar androidToolbar = findViewById(R.id.android_toolbar);
+        setSupportActionBar(androidToolbar);
 
         // References to views
-
         pullToRefresh = findViewById(R.id.pullToRefresh);
         myRecyclerView = findViewById(R.id.my_recycler_view);
-        Toolbar androidToolbar = findViewById(R.id.android_toolbar);
         adView = findViewById(R.id.adView);
         progressBar = findViewById(R.id.progressBar);
 
@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         adView.loadAd(adRequest);
 
 
-        setSupportActionBar(androidToolbar);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

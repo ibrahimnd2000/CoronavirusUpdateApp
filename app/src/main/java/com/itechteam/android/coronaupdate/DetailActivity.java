@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class DetailActivity extends AppCompatActivity {
+    private static final String TAG = "DetailActivity";
     private static Retrofit retrofit;
     private ImageView flagImageView;
 
@@ -64,6 +66,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView totalRecoveredValueTextView;
     private TextView dateUpdatedValueTextView;
 
+
     private MenuItem shareMenuItem;
 
     private Summary.Countries selectedCountry;
@@ -74,6 +77,34 @@ public class DetailActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
+    public void loadSelectedCountry() {
+        RestCountriesApi restCountriesApi = getRetrofit().create(RestCountriesApi.class);
+        Call<CountriesFlag> call = restCountriesApi.getCountryFlags("https://restcountries.eu/rest/v2/alpha/" + selectedCountry.getCountryCode() + "?fields=flag");
+        call.enqueue(new Callback<CountriesFlag>() {
+            @Override
+            @EverythingIsNonNull
+            public void onResponse(Call<CountriesFlag> call, Response<CountriesFlag> response) {
+                shareMenuItem.setVisible(true);
+                if (!response.isSuccessful() || response.body() == null) {
+                    Toast.makeText(DetailActivity.this, "Sorry, country flag not found: " + response.code(), Toast.LENGTH_SHORT).show();
+                } else {
+                    flagUrl = response.body().getFlag();
+                    Uri uri = Uri.parse(flagUrl);
+                    requestBuilder
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .load(uri)
+                            .into(flagImageView);
+                }
+            }
+
+            @Override
+            @EverythingIsNonNull
+            public void onFailure(Call<CountriesFlag> call, Throwable t) {
+                Toast.makeText(DetailActivity.this, "ERROR: Make sure you are connected to the Internet.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -216,9 +247,11 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
+        supportInvalidateOptionsMenu();
+        Toolbar androidToolbar = findViewById(R.id.android_toolbar);
+        setSupportActionBar(androidToolbar);
 
         // References to all of the views
-        Toolbar androidToolbar = findViewById(R.id.android_toolbar);
         countryNameValueTextView = findViewById(R.id.countryNameValueTextView);
         newConfirmedValueTextView = findViewById(R.id.newConfirmedValueTextView);
         totalConfirmedValueTextView = findViewById(R.id.totalConfirmedValueTextView);
@@ -230,44 +263,19 @@ public class DetailActivity extends AppCompatActivity {
         flagImageView = findViewById(R.id.flagImageView);
         rootView = getWindow().getDecorView().findViewById(android.R.id.content);
 
-        setSupportActionBar(androidToolbar);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        getRequestBuilder();
+
 
         Intent intent = getIntent();
         selectedCountry = (Summary.Countries) intent.getSerializableExtra("selectedCountry");
         androidToolbar.setTitle((selectedCountry != null ? selectedCountry.getCountry() : null) + " Details");
 
+        getRequestBuilder();
         setTextValues();
-
-        RestCountriesApi restCountriesApi = getRetrofit().create(RestCountriesApi.class);
-        Call<CountriesFlag> call = restCountriesApi.getCountryFlags("https://restcountries.eu/rest/v2/alpha/" + selectedCountry.getCountryCode() + "?fields=flag");
-        call.enqueue(new Callback<CountriesFlag>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<CountriesFlag> call, Response<CountriesFlag> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    Toast.makeText(DetailActivity.this, "Sorry, country flag not found: " + response.code(), Toast.LENGTH_SHORT).show();
-                } else {
-                    flagUrl = response.body().getFlag();
-                    Uri uri = Uri.parse(flagUrl);
-                    shareMenuItem.setVisible(true);
-                    requestBuilder
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .load(uri)
-                            .into(flagImageView);
-                }
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<CountriesFlag> call, Throwable t) {
-                Toast.makeText(DetailActivity.this, "Error encountered: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        loadSelectedCountry();
     }
 }
