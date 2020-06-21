@@ -18,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextColor="#FFF" />
+        app:titleTextColor="#FFF"
+        tools:targetApi="lollipop" />
 
 
     <ImageView
@@ -67,7 +68,7 @@
                 android:layout_column="0"
                 android:text="Country:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/countryNameValueTextView"
@@ -77,7 +78,7 @@
                 android:gravity="center_vertical"
                 android:text="Pakistan"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -98,7 +99,7 @@
                 android:layout_column="0"
                 android:text="New Confirmed:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/newConfirmedValueTextView"
@@ -108,7 +109,7 @@
                 android:gravity="center_vertical"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -129,7 +130,7 @@
                 android:layout_column="0"
                 android:text="Total Confirmed:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/totalConfirmedValueTextView"
@@ -139,7 +140,7 @@
                 android:gravity="center_vertical"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
         </TableRow>
 
@@ -161,7 +162,7 @@
                 android:layout_column="0"
                 android:text="New Deaths:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/newDeathsValueTextView"
@@ -171,7 +172,7 @@
                 android:gravity="center_vertical"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -192,7 +193,7 @@
                 android:layout_column="0"
                 android:text="Total Deaths:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/totalDeathsValueTextView"
@@ -202,7 +203,7 @@
                 android:gravity="center_vertical"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -223,7 +224,7 @@
                 android:layout_column="0"
                 android:text="New Recovered:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/newRecoveredValueTextView"
@@ -233,7 +234,7 @@
                 android:gravity="center_vertical"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -254,7 +255,7 @@
                 android:layout_column="0"
                 android:text="Total Recovered:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/totalRecoveredValueTextView"
@@ -264,7 +265,7 @@
                 android:gravity="center_vertical"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -285,7 +286,7 @@
                 android:layout_column="0"
                 android:text="Date Updated:"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/dateUpdatedValueTextView"
@@ -295,7 +296,7 @@
                 android:gravity="center_vertical"
                 android:text="April 01, 2000 : 1:00"
                 android:textColor="#FFFFFF"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </TableRow>
 
     </TableLayout>
