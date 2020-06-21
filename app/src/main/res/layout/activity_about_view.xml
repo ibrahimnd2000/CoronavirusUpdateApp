@@ -23,9 +23,12 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text='Application Developed by ITechTeams\nPowered by:   www.covid19api.com\n"Icon made by Freepik from www.flaticon.com"'
+        android:layout_marginEnd="8dp"
+        android:text='Application Developed by ITechTeams(@ibrahimnd2000)\nPowered by:   www.covid19api.com\n"Icon made by Freepik from www.flaticon.com"'
         android:textColor="#FFFFFF"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />

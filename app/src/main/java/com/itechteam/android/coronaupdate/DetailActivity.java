@@ -20,7 +20,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,12 +33,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.StreamEncoder;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.caverock.androidsvg.SVG;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import java.text.DecimalFormat;
@@ -53,12 +49,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailActivity extends AppCompatActivity {
-    private static final String TAG = "DetailActivity";
-    private static Gson gson;
     private static Retrofit retrofit;
     private ImageView flagImageView;
 
-    private GenericRequestBuilder requestBuilder;
+    private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
     private TextView countryNameValueTextView;
     private TextView newConfirmedValueTextView;
@@ -81,12 +75,6 @@ public class DetailActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onResume() {
-        Log.d(TAG, "onResume: called!");
-        super.onResume();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         shareMenuItem = menu.findItem(R.id.action_share);
@@ -99,16 +87,14 @@ public class DetailActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_share) {
             int permission = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-            if(permission != PackageManager.PERMISSION_GRANTED) {
+            if (permission != PackageManager.PERMISSION_GRANTED) {
                 verifyStoragePermissions(DetailActivity.this);
             } else {
                 Date d = new Date();
                 String fileName = DateFormat.format("MMMM d, yyyy hh:mm:ss", d.getTime()) + ".png";
-                try {
-                    store(getScreenshot(rootView), fileName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                store(getScreenshot(rootView), fileName);
+
             }
             return true;
         }
@@ -123,17 +109,17 @@ public class DetailActivity extends AppCompatActivity {
                 .as(SVG.class)
                 .transcode(new SvgDrawableTranscoder(), PictureDrawable.class)
                 .sourceEncoder(new StreamEncoder())
-                .cacheDecoder(new FileToStreamDecoder<SVG>(new SvgDecoder()))
+                .cacheDecoder(new FileToStreamDecoder<>(new SvgDecoder()))
                 .placeholder(R.drawable.placeholder_loading_image)
                 .decoder(new SvgDecoder())
                 .animate(android.R.anim.fade_in)
-                .listener(new SvgSoftwareLayerSetter<Uri>());
+                .listener(new SvgSoftwareLayerSetter<>());
     }
 
     public static void verifyStoragePermissions(Activity activity) {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        if(permission != PackageManager.PERMISSION_GRANTED) {
+        if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                     activity,
                     PERMISSIONS_STORAGE,
@@ -150,7 +136,7 @@ public class DetailActivity extends AppCompatActivity {
         return bitmap;
     }
 
-    private void store(Bitmap bm, String fileName) throws IOException {
+    private void store(Bitmap bm, String fileName) {
         final File dir = new File(getExternalFilesDir(null) + "/Screenshots");
         final File image = new File(dir.getAbsolutePath(), fileName);
         if (!dir.exists()) {
@@ -186,7 +172,7 @@ public class DetailActivity extends AppCompatActivity {
                 this.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
 
-        } else{
+        } else {
             Uri path = Uri.fromFile(file);
             intent.putExtra(Intent.EXTRA_STREAM, path);
         }
@@ -200,9 +186,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public static Retrofit getRetrofit() {
-        gson = new GsonBuilder()
-                .create();
-
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl("https://restcountries.eu/rest/v2/")
@@ -213,12 +196,11 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void setTextValues() {
-        countryNameValueTextView.setText(selectedCountry.getCountry());
         DecimalFormat formatter = new DecimalFormat("#,###,###");
         String date = "";
-        android.text.format.DateFormat df = new android.text.format.DateFormat();
 
-        date += df.getLongDateFormat(getApplicationContext()).format(selectedCountry.getDate());
+        date += DateFormat.getLongDateFormat(getApplicationContext()).format(selectedCountry.getDate());
+        countryNameValueTextView.setText(selectedCountry.getCountry());
         newConfirmedValueTextView.setText(formatter.format(selectedCountry.getNewConfirmed()));
         totalConfirmedValueTextView.setText(formatter.format(selectedCountry.getTotalConfirmed()));
         newDeathsValueTextView.setText(formatter.format(selectedCountry.getNewDeaths()));
@@ -233,14 +215,9 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
+
+        // References to all of the views
         Toolbar androidToolbar = findViewById(R.id.android_toolbar);
-        setSupportActionBar(androidToolbar);
-        getRequestBuilder();
-
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-
-
         countryNameValueTextView = findViewById(R.id.countryNameValueTextView);
         newConfirmedValueTextView = findViewById(R.id.newConfirmedValueTextView);
         totalConfirmedValueTextView = findViewById(R.id.totalConfirmedValueTextView);
@@ -249,26 +226,33 @@ public class DetailActivity extends AppCompatActivity {
         newRecoveredValueTextView = findViewById(R.id.newRecoveredValueTextView);
         totalRecoveredValueTextView = findViewById(R.id.totalRecoveredValueTextView);
         dateUpdatedValueTextView = findViewById(R.id.dateUpdatedValueTextView);
+        flagImageView = findViewById(R.id.flagImageView);
+        rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+
+        setSupportActionBar(androidToolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        getRequestBuilder();
 
         Intent intent = getIntent();
         selectedCountry = (Summary.Countries) intent.getSerializableExtra("selectedCountry");
+        androidToolbar.setTitle((selectedCountry != null ? selectedCountry.getCountry() : null) + " Details");
 
-        androidToolbar.setTitle(selectedCountry.getCountry() + " Details");
-        setSupportActionBar(androidToolbar);
-
-        flagImageView = findViewById(R.id.flagImageView);
         setTextValues();
-        rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+
         RestCountriesApi restCountriesApi = getRetrofit().create(RestCountriesApi.class);
-        Call<List<CountriesFlag>> call = restCountriesApi.getCountryFlags("https://restcountries.eu/rest/v2/name/" + selectedCountry.getCountry().toLowerCase() + "?fields=flag");
-        call.enqueue(new Callback<List<CountriesFlag>>() {
+        Call<CountriesFlag> call = restCountriesApi.getCountryFlags("https://restcountries.eu/rest/v2/alpha/" + selectedCountry.getCountryCode() + "?fields=flag");
+        call.enqueue(new Callback<CountriesFlag>() {
             @Override
-            public void onResponse(Call<List<CountriesFlag>> call, Response<List<CountriesFlag>> response) {
+            public void onResponse(Call<CountriesFlag> call, Response<CountriesFlag> response) {
                 if (!response.isSuccessful() || response.body() == null) {
                     Toast.makeText(DetailActivity.this, "Sorry, country flag not found: " + response.code(), Toast.LENGTH_SHORT).show();
                     flagImageView.setImageResource(R.drawable.placeholder_flag_error_image);
                 } else {
-                    flagUrl = response.body().get(0).getFlag();
+                    flagUrl = response.body().getFlag();
                     Uri uri = Uri.parse(flagUrl);
                     requestBuilder
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -279,12 +263,9 @@ public class DetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<CountriesFlag>> call, Throwable t) {
+            public void onFailure(Call<CountriesFlag> call, Throwable t) {
                 Toast.makeText(DetailActivity.this, "Error encountered: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
-
 }

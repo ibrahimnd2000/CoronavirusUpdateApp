@@ -8,5 +8,5 @@ import retrofit2.http.Url;
 
 public interface RestCountriesApi {
     @GET
-    Call<List<CountriesFlag>> getCountryFlags(@Url String url);
+    Call<CountriesFlag> getCountryFlags(@Url String url);
 }
