@@ -8,7 +8,7 @@ android {
         applicationId "com.itechteam.android.coronaupdate"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 8
+        versionCode 9
         versionName "2"
         ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
